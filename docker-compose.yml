@@ -14,7 +14,7 @@ services:
         ports:
             - "5432:5432"
         networks:
-            - sonarqube-network
+            - sonarqube-external-network
 
     sonarqube-server:
         image: sonarqube:latest
@@ -30,8 +30,8 @@ services:
             - "9001:9000"
             - "9092:9092"
         networks:
-            - sonarqube-network
+            - sonarqube-external-network
 
 networks:
-    sonarqube-network:
-        driver: bridge
+    sonarqube-external-network:
+        external: true
