@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+    postgresql:
+        image: postgres:latest
+        container_name: postgresql
+        volumes:
+            - ./postgres/dump-example.sql:/docker-entrypoint-initdb.d/init-db.sql
+        environment:
+            POSTGRES_PASSWORD: docker
+            POSTGRES_USER: docker
+            POSTGRES_HOST: localhost
+            PGDATA: /var/lib/postgresql/data/db-files/
+        ports:
+            - "5432:5432"
+        networks:
+            - sonarqube-network
+
+    sonarqube-server:
+        image: sonarqube:latest
+        container_name: sonarqube-server
+        environment:
+            SONARQUBE_JDBC_USERNAME: "docker"
+            SONARQUBE_JDBC_PASSWORD: "docker"
+            SONARQUBE_JDBC_URL: "jdbc:postgresql://postgresql/sonar"
+        volumes:
+            - ./sonarqube/volume/data:/opt/sonarqube/data
+            - ./sonarqube/volume/extensions:/opt/sonarqube/extensions
+        ports:
+            - "9001:9000"
+            - "9092:9092"
+        networks:
+            - sonarqube-network
+
+networks:
+    sonarqube-network:
+        driver: bridge
