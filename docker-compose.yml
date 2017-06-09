@@ -16,6 +16,8 @@ services:
         networks:
             - sonarqube-external-network
 
+    # https://hub.docker.com/_/sonarqube/
+    # https://github.com/SonarSource/docker-sonarqube
     sonarqube-server:
         image: sonarqube:latest
         container_name: sonarqube-server
